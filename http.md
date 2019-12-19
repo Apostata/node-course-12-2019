@@ -33,3 +33,30 @@ server.listen(3000);
 ````
 
 **res.end() - é importante pois não fica aguardando nada so servidor enviando assim a resposta para o usuário. Não é possível escrever nada depois disso para que seja exibido na página**
+
+### Buffers & Streams
+Como funciona o buffer:
+Carrega uma parte do arquivo e vai parseando em pequenas partes, disponibilizando conforme vai carregando.
+
+````
+...
+if(url === '/message' && method === 'POST'){
+    const body = [];
+
+    req.on('data', chunk => {
+        body.push(chunk);
+    });
+
+    req.on('end', ()=> {
+        const parsedBody = Buffer.concat(body).toString();
+        const message = parsedBody.split('=')[1];
+        fs.writeFileSync('message.txt', message);
+    })
+
+    
+    res.statusCode =  302;
+    res.setHeader('Location', '/');
+    return res.end();
+}
+...
+````
