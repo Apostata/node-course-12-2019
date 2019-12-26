@@ -60,3 +60,18 @@ if(url === '/message' && method === 'POST'){
 }
 ...
 ````
+
+## Static Folder
+Usando express para servir arquivos estáticos.
+
+````
+import path from 'path';
+import express from 'express';
+
+const app = express();
+app.use(express.static(path.join(__dirname, 'public')));
+
+...
+````
+
+podem existir multiplos pastas estaticas.
