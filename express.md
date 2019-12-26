@@ -108,6 +108,19 @@ app.use(
 
 ````
 
+### res.render()
+Usa a configuração global para renderizar a página requisitada no template angine determinado no 
+na configuração global do express no metodo set().
+
+````
+...
+router.get('/', (req, res, next) => {
+  res.render('shop');
+});
+
+````
+
+
 ## metodos get(), post(), put(), patch(), delete()
 Funciona como o use(), mas só para requisições do tipo especificado, além de testarem o path exato,
 ou seja, mesmo que a rota get('/', ()=>{...}) venha primeiro que get('/teste', ()=>{...}),
@@ -118,3 +131,8 @@ ou seja se tentar fazer um post num path setado como get, não funcionará.
 ## Rotas com express.Router()
 
 TODO: mostrar o router do express e filtrando as todas
+
+## metodo set()
+
+Seta uma configuração global para o express. 
+**Vide no site do express**
