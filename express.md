@@ -136,3 +136,25 @@ TODO: mostrar o router do express e filtrando as todas
 
 Seta uma configuração global para o express. 
 **Vide no site do express**
+````
+...
+app.set('view engine', 'pug');
+app.set('views', 'views/pug')
+...
+````
+
+**Por padrão, a pasta dos templates já é a pasta views, só precisa especificar caso seja outra pasta, como no caso acima**
+
+### metodo engine()
+Para tempalte engines não registrados por padrão, como por exemplo Handlebars. Pug já é registrado por padrão.
+
+````
+...
+import expressHbs from 'express-handlebars';
+
+...
+app.engine('handlebars', expressHbs())
+app.set('view engine', 'handlebars');
+app.set('views', 'views/hbs')
+...
+````

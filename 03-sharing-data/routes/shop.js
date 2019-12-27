@@ -5,10 +5,14 @@ const router = express.Router();
 
 router.get('/', (req, res, next) => {
  res.render('shop', 
- { 
+ {
+      //layout: false, 
+      hasProducts: products.length > 0,
       products, 
-      docTitle: 'My Shop List',
-      path: '/'
+      pageTitle: 'My Shop List',
+      path: '/',
+      activeShop : true,
+      ProductCSS: true
     }
   );
 });

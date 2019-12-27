@@ -10,8 +10,12 @@ const router = express.Router();
 router.get('/add-product', (req, res, next) => {
   res.render('add-product', 
   { 
-    docTitle: 'My Shop - add Product',
-    path:'/admin/add-product'
+    //layout: false,
+    pageTitle: 'My Shop - add Product',
+    path:'/admin/add-product',
+    ProductCSS: true,
+    FormsCSS: true,
+    activeAddProduct: true
   }
   );
 });
