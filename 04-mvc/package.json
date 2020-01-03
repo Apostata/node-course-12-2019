@@ -1,0 +1,28 @@
+{
+  "name": "nodejs-complete-guide",
+  "version": "1.0.0",
+  "description": "Complete Node.js Guide",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "nodemon --exec ./node_modules/.bin/babel-node app.js",
+    "start-server": "node app.js"
+  },
+  "author": "Maximilian Schwarzmüller",
+  "license": "ISC",
+  "devDependencies": {
+    "@babel/cli": "^7.7.7",
+    "@babel/core": "^7.7.7",
+    "@babel/node": "^7.7.7",
+    "@babel/preset-env": "^7.7.7",
+    "nodemon": "^1.18.3"
+  },
+  "dependencies": {
+    "@babel/plugin-proposal-class-properties": "^7.7.4",
+    "body-parser": "^1.18.3",
+    "ejs": "^3.0.1",
+    "express": "^4.16.3",
+    "express-handlebars": "^3.1.0",
+    "pug": "^2.0.4"
+  }
+}

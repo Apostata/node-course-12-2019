@@ -1,0 +1,21 @@
+if products.length > 0
+    div.grid
+        each product in products
+            article.card.product-item
+                header.card__header
+                    h1.product__title #{product.title ? product.title : 'Título'}
+                div.card__image
+                    img(src=product.imageUrl ? product.imageUrl : 'https://media.gettyimages.com/photos/blank-yellow-book-picture-id171360450?s=2048x2048', alt=product.title)
+                div.card__content
+                    h2.product__price R$#{product.price ? product.price : 0}
+                    p.product__description #{product.description ? product.description: 'Descrição'}
+                div.card__actions
+                    if edit
+                        form(action="/admin/delete-product" method="POST")
+                            a.btn(href="/admin/edit-product") Edit
+                            button.btn(type="submit") Delete
+                    else
+                        form(action="/admin/add-to-cart" method="POST")
+                            button(type="submit").btn Add to Cart
+else
+    p Não há produtos em sua lista ...
