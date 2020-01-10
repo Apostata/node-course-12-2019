@@ -1,0 +1,11 @@
+ul.cart
+    - var amountItems = 0
+    each product in cart.products
+        li 
+            p #{product.title}(#{product.qty})
+            form(action="/cart-delete-item" method="POST")
+                input#id(type="hidden", name="id", value=product.id)
+                input#price(type="hidden", name="price", value=product.price)
+                button.btn(type="submit") Remover
+        - amountItems = amountItems + product.qty;
+    h2 Total : #{amountItems} Produtos. Valor #{cart.totalPrice}.

@@ -11,11 +11,12 @@ if products.length > 0
                     p.product__description #{product.description ? product.description: 'Descrição'}
                 div.card__actions
                     if edit
-                        form(action="/admin/delete-product" method="POST")
-                            a.btn(href="/admin/edit-product") Edit
+                        form(action="/admin/delete-product/" method="POST")
+                            input#id(type="hidden", value=product.id name="id")
+                            a.btn(href="/admin/product/" + product.id) Edit
                             button.btn(type="submit") Delete
                     else
-                        form(action="/admin/add-to-cart" method="POST")
-                            button(type="submit").btn Add to Cart
+                        include ../includes/add-to-cart.pug
+                        a.btn.details(href="/products/" + product.id) Details
 else
     p Não há produtos em sua lista ...

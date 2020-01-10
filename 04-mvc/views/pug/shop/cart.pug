@@ -5,3 +5,8 @@ block styles
 
 block content
     h1 Carrinho
+    if cart.products.length > 0
+        include ../includes/cart-list.pug
+    else
+        p Seu carrinho está vazio.
+
