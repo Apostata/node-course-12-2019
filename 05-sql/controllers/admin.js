@@ -1,15 +1,18 @@
 import Product from '../models/product';
 
 export const getProducts = (req, res, next) => {
-    Product.fetchAll(products => {
-        res.render('admin/list-product', 
-            { 
-                products: products, 
-                pageTitle: 'Admin Product List',
-                path: '/admin/products'
-            }
-        );
-    });
+    Product.fetchAll()
+        .then(([rows, fieldData]) => {
+            const products = rows;
+            res.render('admin/list-product', 
+                { 
+                    products, 
+                    pageTitle: 'Admin Product List',
+                    path: '/admin/products'
+                }
+            );
+        })
+        .catch( err => console.log(err) );
 };
 
 export const getAddProduct = (req, res, next) => {
@@ -44,8 +47,12 @@ export const postEditProduct = (req, res, next) => {
 export const postAddProduct = (req, res, next) => {
     const { title, imageUrl, description, price } = req.body;
     const product = new Product(title, imageUrl, description, price);
-    product.save();
-    res.redirect('/admin/products');
+    product.save()
+        .then(()=>{
+            res.redirect('/admin/products');
+        })
+        .catch( err => console.log(err) );
+    
 };
 
 export const postDeleteProduct = (req, res, next) => {

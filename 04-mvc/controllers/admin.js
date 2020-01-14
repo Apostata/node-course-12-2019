@@ -53,5 +53,4 @@ export const postDeleteProduct = (req, res, next) => {
     Product.delete(id, ()=>{
         res.redirect('/admin/products');
     });
-    
 }

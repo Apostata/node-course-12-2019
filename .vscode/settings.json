@@ -1,3 +1,14 @@
 {
-    "git.ignoreLimitWarning": true
+    "git.ignoreLimitWarning": true,
+    "sqltools.connections": [
+        {
+            "database": "nodesql",
+            "dialect": "MySQL",
+            "name": "NodeSQL",
+            "password": "root",
+            "port": 3306,
+            "server": "localhost",
+            "username": "root"
+        }
+    ]
 }
