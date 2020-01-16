@@ -1,0 +1,16 @@
+extends ../layouts/main-layout.pug
+
+block styles
+    link(rel="stylesheet", href="/css/product.css")
+
+block content
+    div.product__details
+        h1.product__title #{product.title}  
+        div.product__image
+            img(src=product.imageUrl ? product.imageUrl : 'https://media.gettyimages.com/photos/blank-yellow-book-picture-id171360450?s=2048x2048', alt=product.title)
+        div
+            h2.product__price R$#{product.price ? product.price : 0}
+        div
+            p.product__description #{product.description ? product.description: 'Descrição'}
+        
+        include ../includes/add-to-cart.pug

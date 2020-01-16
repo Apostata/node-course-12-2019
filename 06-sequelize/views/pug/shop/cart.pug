@@ -1,0 +1,12 @@
+extends ../layouts/main-layout.pug
+
+block styles
+    link(rel="stylesheet", href="/css/product.css")
+
+block content
+    h1 Carrinho
+    if cart.products.length > 0
+        include ../includes/cart-list.pug
+    else
+        p Seu carrinho está vazio.
+
