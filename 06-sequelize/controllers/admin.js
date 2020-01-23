@@ -69,11 +69,13 @@ export const postEditProduct = (req, res, next) => {
 
 export const postAddProduct = (req, res, next) => {
     const { title, imageUrl, description, price } = req.body;
-    Product.create({
+    // const { user } = req;
+    req.user.createProduct({
         title,
         price,
         imageUrl,
-        description
+        description,
+        // userId: user.id
     })
         .then( result => {
             console.log(`Produto ${title}, criado com sucesso!`);

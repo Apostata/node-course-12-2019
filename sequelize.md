@@ -132,3 +132,84 @@ Product.findByPk(id)
 
 ````
 ## Adicionando Associações entre tabelas
+A ordem dos que são definidos os relacionamentos são importantes
+
+### Relacionamentos 1:1 (um para um)
+Os métodos belongsTo() e hasOne() são usados em conjunto
+
+#### belongsTo 
+Significa que existe um relacionamento entre entre A e B, onde Product tem uma referência (foreign key) de User
+
+#### hasOne
+Significa que User possuí uma referência de Product 
+
+````
+...
+Product.belongsTo(User);
+User.hasOne(Product)  
+...
+````
+
+
+Ou seja Tabela User Possui uma Chave estrangeira de Product.
+Um usuário pode possuir apenas 1 produto.
+
+### Relacionamentos 1:N (um para muitos)
+Os métodos belongsTo() e hasMany() são usados em conjunto
+
+#### hasMany
+Significa que User possuí muitas referências de Product 
+
+````
+...
+Product.belongsTo(User, {   // User own many products (USER CAN CREATE PRODUCTS)
+    constraints: true,      // diz que a tabela User precisa ser criada antes da Product
+    onDelete: 'CASCADE'     //ao remover um usuário, removerá todos os produtos relacionados à ele.
+});
+User.hasMany(Product)  
+...
+````
+
+Ou seja Tabela User Possui varias referências de Product.
+Um usuário pode possuir vários produtos.
+
+### Relacionamentos N:N (muitos para muitos)
+O método belongsToMany() de ser usado duas vezes
+
+````
+...
+Movie.belongsToMany(Actor, { through: 'ActorMovies' });
+Actor.belongsToMany(Movie, { through: 'ActorMovies' });
+...
+````
+
+ActorMovies possui várias referências de Movies.
+ActorMovies possuí várias referências de Actor.
+
+ActorMovies possuir vários filmes e atores, ou vários relacionamentos e 1:1 entre
+Filme e Ator
+
+### Magic Associations
+
+Na criação da associação abaixo, o Sequelize já cria um método `createProduct()`(neste exemplo) para User, este método já associa e insere em produto, automaticamente a chave de usuário.
+
+Criação das associações:
+````
+...
+Product.belongsTo(User, {   
+    constraints: true, 
+    onDelete: 'CASCADE'
+});
+User.hasMany(Product) ;
+...
+````
+
+Magic association:
+````
+req.user.createProduct({
+    title: prod.title,
+    price: prod.price,
+    imageUrl: prod.imageUrl,
+    description: prod.description
+})
+````

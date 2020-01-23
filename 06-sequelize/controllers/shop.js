@@ -48,10 +48,8 @@ export const getCart = (req, res, next) => {
     Cart.getCart( carrinho =>{
         const cartProducts = [];
 
-        Product.fetchAll()
-            .then(([rows, fieldData]) => {
-                const products = rows;
-                
+        Product.findAll()
+            .then((products) => {
                 for (let product of products){
                     const productFound = carrinho.products.findIndex(prod => product.id === prod.id);
                     if(productFound > -1){

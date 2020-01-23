@@ -40,12 +40,11 @@ app.use(shopRoutes);
 app.use(notFound);
 
 // Tables associations
-Product.belongsTo(User, { // User own many products (USER CAN CREATE PRODUCTS)
-    constraints: true,
+Product.belongsTo(User, {   
+    constraints: true,      
     onDelete: 'CASCADE'
 }); 
-
-User.hasMany(Product)
+User.hasMany(Product)   
 
 // Sync tables
 const force = false // para forçar a criação da tabela e resetar setar como true
