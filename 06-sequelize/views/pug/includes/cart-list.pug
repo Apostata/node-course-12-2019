@@ -1,11 +1,16 @@
-ul.cart
-    - var amountItems = 0
+ul.cart.cart__item-list
+    - var amountItems = 0;
+    - var totalPrice = 0;
     each product in cart.products
-        li 
-            p #{product.title}(#{product.qty})
+        li.cart__item 
+            p #{product.title}
+            p quantidade: #{product.cartItem.quantity}
             form(action="/cart-delete-item" method="POST")
                 input#id(type="hidden", name="id", value=product.id)
                 input#price(type="hidden", name="price", value=product.price)
-                button.btn(type="submit") Remover
-        - amountItems = amountItems + product.qty;
-    h2 Total : #{amountItems} Produtos. Valor #{cart.totalPrice}.
+                button.btn.remove(type="submit") Remover
+                
+        - amountItems = amountItems + product.cartItem.quantity;
+        - totalPrice = totalPrice + (product.price * product.cartItem.quantity);
+
+h2 Total : #{amountItems} Produtos. Valor #{totalPrice}.

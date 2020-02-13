@@ -217,6 +217,11 @@ article .btn:active,
   color: white;
 }
 
+.centered{
+  margin: 0 auto;
+  text-align: center;
+}
+
 @media (min-width: 768px) {
   .main-header__nav {
     display: flex;
@@ -226,3 +231,5 @@ article .btn:active,
     display: none;
   }
 }
+
+

@@ -1,7 +1,8 @@
 import Product from '../models/product';
 
 export const getProducts = (req, res, next) => {
-    Product.findAll()
+    req.user.getProducts()
+    //Product.findAll()
         .then(products => {
             res.render('admin/list-product', 
                 { 
@@ -26,10 +27,12 @@ export const getAddProduct = (req, res, next) => {
 }
 
 export const getEditProduct = (req, res, next) => {
-    const { id } = req.params;
-    Product.findByPk(id)
-        .then(product => {
-            if(!product) return res.redirect('/amdmin/products');
+    const prodId = req.params.id;
+    //Product.findByPk(id)
+    req.user.getProducts({where: {id : prodId}})
+        .then(products => {
+            if(!products) return res.redirect('/amdmin/products');
+            const product = products[0];
 
              res.render('admin/add-edit-product', 
                 { 
@@ -47,7 +50,8 @@ export const getEditProduct = (req, res, next) => {
 export const postEditProduct = (req, res, next) => {
     const { id, title, imageUrl, description, price } = req.body;
     // const product = new Product(title, imageUrl, description, price, id);
-    Product.findByPk(id)
+    req.user.getProducts({where:{id:id}})
+    //Product.findByPk(id)
         .then(product =>{
             product.title = title;
             product.imageUrl = imageUrl;

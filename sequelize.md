@@ -176,19 +176,22 @@ Um usuário pode possuir vários produtos.
 ### Relacionamentos N:N (muitos para muitos)
 O método belongsToMany() de ser usado duas vezes
 
+#### belongsToMany
+Significa que existe um relacionamento entre entre Product e Cart de 1:1, CartItem, imtermedia e possui as (foreign key)de Product e Cart
+
 ````
 ...
-Movie.belongsToMany(Actor, { through: 'ActorMovies' });
-Actor.belongsToMany(Movie, { through: 'ActorMovies' });
+Product.belongsToMany(Cart, { through: 'CartItem' });
+Cart.belongsToMany(Product, { through: 'CartItem' });
 ...
 ````
 
-ActorMovies possui várias referências de Movies.
-ActorMovies possuí várias referências de Actor.
+Product pertence a vários CartItem.
+Cart pertence a vários CartItem.
 
-ActorMovies possuir vários filmes e atores, ou vários relacionamentos e 1:1 entre
-Filme e Ator
-
+CartItem possuir vários Product e Cart, vários relacionamentos e 1:1 entre
+Cart e Product
+cd 
 ### Magic Associations
 
 Na criação da associação abaixo, o Sequelize já cria um método `createProduct()`(neste exemplo) para User, este método já associa e insere em produto, automaticamente a chave de usuário.
@@ -203,13 +206,32 @@ Product.belongsTo(User, {
 User.hasMany(Product) ;
 ...
 ````
+#### Magic Associations - Pega todos produtos do usuário ativo
+````
+req.user.getProducts();
+````
 
-Magic association:
+#### Magic Associations - Pega um produto específo do usuário ativo
+````
+req.user.getProducts({where:{id: prodId}});
+
+````
+
+#### Magic Associations - Cria produto para o usuário ativo
 ````
 req.user.createProduct({
     title: prod.title,
     price: prod.price,
     imageUrl: prod.imageUrl,
     description: prod.description
-})
+});
+````
+
+#### Magic Associations - Deleta Produto
+
+````
+ Product.findByPk(id)
+.then(product =>{
+    return product.destroy();
+});
 ````

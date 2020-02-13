@@ -1,5 +1,4 @@
 import Product from '../models/product';
-import Cart from '../models/cart';
 
 export const getProducts = (req, res, next) => {
     Product.findAll()
@@ -45,43 +44,86 @@ export const getIndex = (req, res, next) => {
 };
 
 export const getCart = (req, res, next) => {
-    Cart.getCart( carrinho =>{
-        const cartProducts = [];
-
-        Product.findAll()
-            .then((products) => {
-                for (let product of products){
-                    const productFound = carrinho.products.findIndex(prod => product.id === prod.id);
-                    if(productFound > -1){
-                        product.qty = carrinho.products[productFound].qty;
-                        cartProducts.push(product);
-                    }
-                
+    req.user.getCart()
+        .then( cart => {
+            return cart.getProducts();
+        })
+        .then(products => {
+            const cart = { products }
+            res.render('shop/cart', 
+                {
+                    cart,
+                    path: '/cart',
+                    pageTitle: 'Your Cart',
                 }
-                const cart = { totalPrice: carrinho.totalPrice, products: [...cartProducts] };
-                res.render('shop/cart', 
-                    {
-                        cart,
-                        path: '/cart',
-                        pageTitle: 'Your Cart',
-                    }
-                );
-            })
-            .catch( err => console.log(err) );
-    });
-    
+            );
+        })
+        .catch()
 };
 
-export const postCart = (req, res, next) => {
+export const postCart = (req, res, next) => { 
     const { id } = req.body; 
-    Product.findByPk(id)
-        .then( product => {
-            Cart.addProduct(id, product.price);
+    let resultCart;
+    let quantity = 1;
+
+    req.user.getCart()
+        .then( cart => {
+            resultCart = cart;
+            
+            return cart.getProducts({where:{id}})
+        })
+        .then(products => {
+            let product;
+
+            if(products.length > 0){
+                product = products[0];
+
+                if(product){
+                    quantity = product.cartItem.quantity + 1;
+                }
+            } 
+            return Product.findByPk(id) //add new cartItem with quantity to cart
+        })
+        .then(product => {
+            return resultCart.addProduct(product, {through: {quantity}});
+        })
+        .then(()=>{
             res.redirect('/cart');
         })
         .catch( err => console.log(err));
-   
 };
+
+export const postOrder =(req, res, next) =>{
+    let productsList;
+    let fetchedCart;
+
+    req.user.getCart()
+        .then(cart =>{
+            fetchedCart = cart;
+            return cart.getProducts();
+        })
+        .then(products =>{
+            productsList = products;
+            return req.user.createOrder();
+            
+        })
+        .then(order =>{
+            return order.addProducts(
+                productsList.map(product=>{
+                    product.oderItem = { quantity: product.cartItem.quantity };
+                    console.log(product.oderItem)
+                    return product;
+                })
+            );
+        })
+        .then(()=>{
+            return fetchedCart.setProducts(null);           
+        })
+        .then(()=>{
+            res.redirect('/orders');
+        })
+        .catch(err=>console.log(err));
+}
 
 export const getOrders = (req, res, next) => {
     res.render('shop/orders', 
@@ -102,8 +144,17 @@ export const getCheckout = (req, res, next) => {
 };
 
 export const postCartDelItem  = (req, res, next) => {
-    const { id, price } = req.body;
-    Cart.deleteProduct(id, price, ()=>{
-        res.redirect('/cart');
-    });
+    const { id } = req.body;
+    req.user.getCart()
+        .then(cart =>{
+            return cart.getProducts({where:{id}});
+        })
+        .then(products => {
+            const product = products[0];
+            return product.cartItem.destroy();
+        })
+        .then(()=>{
+            res.redirect('/cart');
+        })
+        .catch(err => console.log(err));
 };
